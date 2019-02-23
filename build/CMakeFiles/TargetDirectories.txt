@@ -1,0 +1,8 @@
+C:/Users/Morra/Desktop/Project/build/CMakeFiles/uninstall.dir
+C:/Users/Morra/Desktop/Project/build/CMakeFiles/INSTALL.dir
+C:/Users/Morra/Desktop/Project/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Morra/Desktop/Project/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/Morra/Desktop/Project/build/src/CMakeFiles/glfw.dir
+C:/Users/Morra/Desktop/Project/build/src/CMakeFiles/INSTALL.dir
+C:/Users/Morra/Desktop/Project/build/PipeTestTask/CMakeFiles/pipe.dir
+C:/Users/Morra/Desktop/Project/build/PipeTestTask/CMakeFiles/INSTALL.dir
