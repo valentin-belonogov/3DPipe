@@ -6,6 +6,14 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+float inner_rad = 1;
+float outer_rad;
+float length = 10;
+float thickness = 1;
+
+double lastX;
+double lastY;
+
 static void
 pipe(GLfloat internal_radius, GLfloat external_radius, GLfloat length,
 	GLint segments)
@@ -62,25 +70,34 @@ pipe(GLfloat internal_radius, GLfloat external_radius, GLfloat length,
 	glEnd();
 }
 
+static GLfloat rot_x = 0.f, rot_y = 0.f, rot_z = 10.f;
 static GLint pipe1;
 
 //Draw function
 static void draw(void)
 {
+	outer_rad = thickness + inner_rad;
 	static GLfloat color[4] = { 0.8f, 0.1f, 0.1f, 1.f };
 	pipe1 = glGenLists(1);
 	glNewList(pipe1, GL_COMPILE);
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
-	pipe(1, 2, 10, 500);
+	pipe(inner_rad, outer_rad, length, 500);
+	//pipe(1, 2, 10, 500);
 	glEndList();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
+	glPushMatrix();
+	glRotatef(rot_x, 1.0, 0.0, 0.0);
+	glRotatef(rot_y, 0.0, 1.0, 0.0);
+	glRotatef(rot_z, 0.0, 0.0, 1.0);
 
 	glPushMatrix();
 	glTranslatef(0.0, 0.0, 0.0);
 	glRotatef(0.0, 0.0, 0.0, 1.0);
 	glCallList(pipe1);
 	glPopMatrix();	
+
+	glPopMatrix();
 }
 
 //Input keys handling
@@ -91,11 +108,34 @@ void key_press(GLFWwindow* window, int k, int l, int action)
 //Mouse wheel handling
 int scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+	if (yoffset == 1.0)
+	{
+		if (inner_rad>0.00f)
+			inner_rad -= 0.05f;
+	}
+	else
+		if (yoffset == -1.0)
+		{
+			if (inner_rad<outer_rad - 0.06)
+				inner_rad += 0.05f;
+		}
+	return yoffset;
 }
 
 //Rotating with mouse
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+	if (xpos > lastX)
+	{
+		rot_y += 4.0;
+		lastX = xpos;
+	}
+	else
+		if (xpos<lastX)
+		{
+			rot_y -= 4.0;
+			lastX = xpos;
+		}
 }
 
 //window
@@ -149,6 +189,12 @@ int main(int argc, char *argv[])
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
+
+	// Set callback functions
+	glfwSetFramebufferSizeCallback(window, setwindow);
+	glfwSetKeyCallback(window, key_press);
+	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
 
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
