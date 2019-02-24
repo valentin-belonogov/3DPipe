@@ -11,11 +11,13 @@ pipe(GLfloat internal_radius, GLfloat external_radius, GLfloat length,
 	GLint segments)
 {	
 	GLfloat r0, r1;
-	GLfloat angle;
-	GLint i;	
+	GLfloat angle, AngleNorm;
+	GLint i;
+	GLfloat u, v;
 
 	r0 = internal_radius;
 	r1 = external_radius;
+	AngleNorm = 2.f * (float)M_PI / segments;
 	glShadeModel(GL_FLAT);
 	glNormal3f(0.f, 0.f, 1.f);
 
@@ -25,6 +27,37 @@ pipe(GLfloat internal_radius, GLfloat external_radius, GLfloat length,
 		angle = i * 2.f * (float)M_PI / segments;
 		glVertex3f((float)cos(angle) * r0, (float)sin(angle) * r0, length * 0.5f);
 		glVertex3f((float)cos(angle) * r1, (float)sin(angle) * r1, length * 0.5f);
+	}
+	glEnd();
+
+	// Pipe's back face
+	glBegin(GL_QUAD_STRIP);
+	for (i = 0; i <= segments; i++) {
+		angle = i * 2.f * (float)M_PI / segments;
+		glVertex3f((float)cos(angle) * r1, (float)sin(angle) * r1, -length * 0.5f);
+		glVertex3f((float)cos(angle) * r0, (float)sin(angle) * r0, -length * 0.5f);
+	}
+	glEnd();
+
+	// Pipe's inner radius cylinder
+	glBegin(GL_QUAD_STRIP);
+	for (i = 0; i <= segments; i++) {
+		angle = i * 2.f * (float)M_PI / segments;
+		glVertex3f((float)cos(angle) * r0, (float)sin(angle) * r0, -length * 0.5f);
+		glVertex3f((float)cos(angle) * r0, (float)sin(angle) * r0, length * 0.5f);
+		glNormal3f(-(float)cos(angle), -(float)sin(angle), 0.f);
+	}
+	glEnd();
+
+	// Pipe's outer radius cylinder
+	glBegin(GL_QUAD_STRIP);
+	for (i = 0; i <= segments; i++) {
+		angle = i * 2.f * (float)M_PI / segments;
+		u = (float)cos(AngleNorm + angle) * r1 - (float)cos(angle) * r1;
+		v = (float)sin(AngleNorm + angle) * r1 - (float)sin(angle) * r1;
+		glNormal3f(v, -u, 0.0);
+		glVertex3f((float)cos(angle) * r1, (float)sin(angle) * r1, length * 0.5f);
+		glVertex3f((float)cos(angle) * r1, (float)sin(angle) * r1, -length * 0.5f);
 	}
 	glEnd();
 }
