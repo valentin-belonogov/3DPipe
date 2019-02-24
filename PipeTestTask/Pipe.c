@@ -6,10 +6,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-float inner_rad = 1;
+float inner_rad;
 float outer_rad;
-float length = 10;
-float thickness = 1;
+float length;
+float thickness;
 
 double lastX;
 double lastY;
@@ -76,13 +76,11 @@ static GLint pipe1;
 //Draw function
 static void draw(void)
 {
-	outer_rad = thickness + inner_rad;
 	static GLfloat color[4] = { 0.8f, 0.1f, 0.1f, 1.f };
 	pipe1 = glGenLists(1);
 	glNewList(pipe1, GL_COMPILE);
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
 	pipe(inner_rad, outer_rad, length, 500);
-	//pipe(1, 2, 10, 500);
 	glEndList();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
@@ -171,6 +169,15 @@ static void init(void)
 
 int main(int argc, char *argv[])
 {
+	//Inputs
+	printf("Input inner radius\n");
+	scanf("%e", &inner_rad);
+	printf("Input pipe length\n");
+	scanf("%e", &length);
+	printf("Input pipe thikness\n");
+	scanf("%e", &thickness);
+	outer_rad = thickness + inner_rad;
+
 	GLFWwindow* window;
 	int width, height;
 
