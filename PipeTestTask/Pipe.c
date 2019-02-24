@@ -193,11 +193,11 @@ static void init(void)
 int main(int argc, char *argv[])
 {
 	//Inputs
-	printf("Input inner radius\n");
+	printf("Input inner radius (Suggested value: 1)\n");
 	scanf("%e", &inner_rad);
-	printf("Input pipe length\n");
+	printf("Input pipe length (Suggested value: 15)\n");
 	scanf("%e", &length);
-	printf("Input pipe thickness\n");
+	printf("Input pipe thickness (Suggested value: 1)\n");
 	scanf("%e", &thickness);
 	outer_rad = thickness + inner_rad;
 
@@ -210,6 +210,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);//fix the window size
 	glfwWindowHint(GLFW_DEPTH_BITS, 16);
 	window = glfwCreateWindow(1280, 720, "Pipe", NULL, NULL);
 
@@ -235,6 +236,7 @@ int main(int argc, char *argv[])
 
 	init();
 
+	// Main loop
 	while (!glfwWindowShouldClose(window))
 	{
 		// Draw the pipe
@@ -243,6 +245,7 @@ int main(int argc, char *argv[])
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }
