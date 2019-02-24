@@ -1,4 +1,5 @@
 #define _USE_MATH_DEFINES
+
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
@@ -37,6 +38,8 @@ pipe(GLfloat internal_radius, GLfloat external_radius, GLfloat length,
 		glVertex3f((float)cos(angle) * r1, (float)sin(angle) * r1, length * 0.5f);
 	}
 	glEnd();
+
+	glNormal3f(0.0, 0.0, -1.0); //backface normal
 
 	// Pipe's back face
 	glBegin(GL_QUAD_STRIP);
@@ -84,6 +87,7 @@ static void draw(void)
 	glEndList();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
+	glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
 	glPushMatrix();
 	glRotatef(rot_x, 1.0, 0.0, 0.0);
 	glRotatef(rot_y, 0.0, 1.0, 0.0);
@@ -101,6 +105,25 @@ static void draw(void)
 //Input keys handling
 void key_press(GLFWwindow* window, int k, int l, int action)
 {
+	if (action != GLFW_PRESS) return;
+
+	switch (k) {
+
+	case GLFW_KEY_ESCAPE:
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+		break;
+	case GLFW_KEY_UP:
+		if (length<29.0)	//near plane boundary
+			length += 1.0;
+		break;
+	case GLFW_KEY_DOWN:
+		if (length>0.0)
+			length -= 1.0;
+		break;
+
+	default:
+		return;
+	}
 }
 
 //Mouse wheel handling
@@ -174,7 +197,7 @@ int main(int argc, char *argv[])
 	scanf("%e", &inner_rad);
 	printf("Input pipe length\n");
 	scanf("%e", &length);
-	printf("Input pipe thikness\n");
+	printf("Input pipe thickness\n");
 	scanf("%e", &thickness);
 	outer_rad = thickness + inner_rad;
 

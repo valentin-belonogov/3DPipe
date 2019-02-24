@@ -1,4 +1,4 @@
 ﻿  Pipe.c
-C:\Users\Morra\Desktop\Project\PipeTestTask\Pipe.c(120): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
-C:\Users\Morra\Desktop\Project\PipeTestTask\Pipe.c(202): warning C4113: 'void (__cdecl *)(GLFWwindow *,int,int,int)' differs in parameter lists from 'GLFWkeyfun'
+C:\Users\Morra\Desktop\Project\PipeTestTask\Pipe.c(143): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+C:\Users\Morra\Desktop\Project\PipeTestTask\Pipe.c(225): warning C4113: 'void (__cdecl *)(GLFWwindow *,int,int,int)' differs in parameter lists from 'GLFWkeyfun'
   pipe.vcxproj -> C:\Users\Morra\Desktop\Project\build\PipeTestTask\Debug\pipe.exe
